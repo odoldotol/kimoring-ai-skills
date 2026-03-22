@@ -34,6 +34,9 @@ Rules:
 - Output ONLY the commit message, nothing else" 2>/dev/null) || true
 fi
 
+# Strip markdown code fences if present
+COMMIT_MSG=$(echo "$COMMIT_MSG" | sed '/^```/d')
+
 # Fallback if claude -p failed or returned empty
 if [ -z "$COMMIT_MSG" ]; then
   FILE_COUNT=$(git diff --cached --name-only | wc -l | tr -d ' ')
